@@ -51,15 +51,15 @@ import com.acmerobotics.roadrunner.geometry.Vector2d;
 
 import java.util.ArrayList;
 
-@Autonomous(name = "Autonomous", group = "Concept")
-public class AprilTag extends LinearOpMode
+@Autonomous(name = "Autonomous1", group = "Concept")
+public class AprilTag1 extends LinearOpMode
 {
     //movement
     private DcMotor frontLeft = null;
     private DcMotor rearLeft = null;
     private DcMotor frontRight = null;
     private DcMotor rearRight = null;
-    private CRServo carouselServo = null; //continuos rotation servo to spin carousel
+    private Servo clawServo = null;
     private BNO055IMU imu;
     Orientation lastAngles = new Orientation();
     double globalAngle, power = .5, correction, rotation;
@@ -201,22 +201,79 @@ public class AprilTag extends LinearOpMode
 
         /* Actually do something useful */
         if(tagOfInterest.id == LEFT){
+
             TrajectorySequence trajSeq = drive.trajectorySequenceBuilder(startingPose)
                     .strafeLeft(26)
-                    .forward(50)
+                    .forward(30)
+                    .turn(Math.toRadians(45))
+                    .forward(5)
+                    .addDisplacementMarker(2, () -> {
+                        drive.clawServo.setPosition(0.5);
+                        // This marker runs 20 inches into the trajectory
+                        drive.liftMotor.setPower(1);
+                        // Run your action in here!
+                    })
+                    .waitSeconds(5)
+                    .forward(5)
+                    .addTemporalMarker(() -> {
+                        drive.clawServo.setPosition(0.3);
+                    })
+                    .back(10)
+                    .addTemporalMarker(() -> {
+                        drive.liftMotor.setPower(0);
+                    })
+                    .turn(Math.toRadians(-45))
+                    .forward(10)
                     .build();
             drive.followTrajectorySequence(trajSeq);
         }else if(tagOfInterest.id == MIDDLE){
             TrajectorySequence trajSeq = drive.trajectorySequenceBuilder(startingPose)
                     .strafeLeft(26)
                     .forward(50)
-                    .strafeRight(26)
+                    .strafeRight(12)
+                    .forward(5)
+                    .addDisplacementMarker(2, () -> {
+                        drive.clawServo.setPosition(0.5);
+                        // This marker runs 20 inches into the trajectory
+                        drive.liftMotor.setPower(1);
+                        // Run your action in here!
+                    })
+                    .waitSeconds(5)
+                    .forward(5)
+                    .addTemporalMarker(() -> {
+                        drive.clawServo.setPosition(0.3);
+                    })
+                    .back(10)
+                    .addTemporalMarker(() -> {
+                        drive.liftMotor.setPower(0);
+                    })
+                    .strafeRight(14)
                     .build();
             drive.followTrajectorySequence(trajSeq);
         }else if(tagOfInterest.id == RIGHT){
             TrajectorySequence trajSeq = drive.trajectorySequenceBuilder(startingPose)
                     .strafeRight(25)
                     .forward(50)
+                    .strafeLeft(25)
+                    .turn(Math.toRadians(48))
+                    .forward(5)
+                    .addDisplacementMarker(2, () -> {
+                        drive.clawServo.setPosition(0.5);
+                        // This marker runs 20 inches into the trajectory
+                        drive.liftMotor.setPower(1);
+                        // Run your action in here!
+                    })
+                    .waitSeconds(5)
+                    .forward(5)
+                    .addTemporalMarker(() -> {
+                        drive.clawServo.setPosition(0.3);
+                    })
+                    .back(10)
+                    .addTemporalMarker(() -> {
+                        drive.liftMotor.setPower(0);
+                    })
+                    .turn(Math.toRadians(-48))
+                    .strafeRight(25)
                     .build();
             drive.followTrajectorySequence(trajSeq);
         }

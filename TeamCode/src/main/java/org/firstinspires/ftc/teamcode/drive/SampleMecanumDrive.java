@@ -46,6 +46,7 @@ import static org.firstinspires.ftc.teamcode.drive.DriveConstants.encoderTicksTo
 import static org.firstinspires.ftc.teamcode.drive.DriveConstants.kA;
 import static org.firstinspires.ftc.teamcode.drive.DriveConstants.kStatic;
 import static org.firstinspires.ftc.teamcode.drive.DriveConstants.kV;
+import com.qualcomm.robotcore.hardware.Servo;
 
 /*
  * Simple mecanum drive hardware implementation for REV hardware.
@@ -69,6 +70,8 @@ public class SampleMecanumDrive extends MecanumDrive {
     private TrajectoryFollower follower;
 
     private DcMotorEx leftFront, leftRear, rightRear, rightFront;
+    public DcMotorEx liftMotor;
+    public Servo clawServo;
     private List<DcMotorEx> motors;
 
     private BNO055IMU imu;
